@@ -1,12 +1,9 @@
 # Imports
 from tkinter import *
 from functools import partial  # To prevent unwanted windows
-from tkinter import filedialog
-import re
+from tkinter import filedialog  # For exporting files
 
 # Set up the interface
-from tkinter.filedialog import asksaveasfile, askopenfile
-
 win = Tk()
 win.title("Te Reo Maori Quiz")
 win.geometry('1000x600+280+100')
@@ -56,21 +53,23 @@ def option_selected(what_btn):
                 num_correct += 1
                 output_box.config(bg="lime")
                 output_box_txt.set("Correct!")
-                guess_history.append(
-                    f"Question: {question}\nYour Answer: {user_ans}\nActual Answer: {real_ans}\n\n")
+                guess_history.append(f"Question: {question}\nYour "
+                                     f"Answer: {user_ans}\nActual Answer: "
+                                     f"{real_ans}\n\n")
             elif eval(f"qst_{num - 1}.answer") != eval(
                     f"qst_{num - 1}.btn{what_btn}_text") and num != 1:
                 output_box.config(bg="red")
                 output_box_txt.set("Incorrect!")
-                guess_history.append(
-                    f"Question: {question}\nYour Answer: {user_ans}\nActual Answer: {real_ans}\n\n")
+                guess_history.append(f"Question: {question}\nYour "
+                                     f"Answer: {user_ans}\nActual Answer: "
+                                     f"{real_ans}\n\n")
 
             # Adding guess results to history
             try:
-                if guess_history != []:
+                if guess_history:
                     history_string = guess_history[-1] + guess_history[-2]
             except IndexError:
-                if guess_history != []:
+                if guess_history:
                     history_string = guess_history[-1]
 
             if num == 11:
@@ -104,7 +103,7 @@ def option_selected(what_btn):
 
 def opt_btn_framework(text, btn_id):
     return Button(frame, bg="light green", command=lambda:
-    option_selected(btn_id), textvariable=text,
+                  option_selected(btn_id), textvariable=text,
                   font=("Comic Sans MS", 14, "bold"))
 
 
@@ -137,8 +136,8 @@ def history(history_string):
 
     # history text (label, row 1)
     history_text = Label(history_frame,
-                         text="Here are your most recent results and final scores"
-                              ". Please use the export button to "
+                         text="Here are your two most recent results and final"
+                              " scores. Please use the export button to "
                               "create a text file of all your "
                               "guesses for this session\n",
                          justify=LEFT, width=40, bg=background,
@@ -176,12 +175,13 @@ def export():
     for item in final_score_history:
         final_score_string += item
 
-    export_string = f"----Final Scores----\n{final_score_string}\n\n----Guesses----\n{guess_history_string}"
+    export_string = f"----Final Scores----\n{final_score_string}\n" \
+                    f"\n----Guesses----\n{guess_history_string}"
     print(export_string)
 
-    filename = filedialog.asksaveasfilename(initialdir='/', title='Save File',
-                                            filetypes=(('Text Files', '*.txt*'),
-                                                       ('All Files', '*.*')))
+    filename = filedialog.asksaveasfilename(initialdir='/desktop',
+                                            title='Save File',
+                                            defaultextension=".txt")
     my_file = open(filename, "w+", encoding="utf-8")
     my_file.write(export_string)
 
