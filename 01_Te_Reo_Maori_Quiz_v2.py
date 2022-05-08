@@ -1,8 +1,8 @@
 """
 Creator: Sammy Cummins
-Version: 1
+Version: 2
+Update: This version contains the button spam prevention function
 """
-
 
 # Imports
 from tkinter import *
@@ -31,12 +31,37 @@ opt4_text = StringVar()
 btn_disabled = False  # Buttons do nothing if btn_disabled = True
 num = 0  # Question number
 num_correct = 0  # Number of questions guest correctly
+count = 0
 current_question = StringVar()
 current_question.set(f"{num}/10")
 history_string = "No history has been recorded yet.\nStart the quiz to " \
                  "gain some sweet history!\n\n\n"
 guess_history = []
 final_score_history = []
+
+
+def prevent_spam(what_btn_transfer):
+    global count, time
+    count += 1
+    if count == 1:
+        eval(f"option{what_btn_transfer}").config(state=DISABLED)
+        time = 0.2
+        count = 0
+
+        def countdown():
+            global time
+            if time >= 0:
+                time -= 1
+                if num != 0:
+                    output_box.after(1000, countdown)
+                else:
+                    output_box.after(1, countdown)
+                option_selected(what_btn_transfer)
+            else:
+                global count
+                eval(f"option{what_btn_transfer}").config(state=NORMAL)
+
+        countdown()
 
 
 def option_selected(what_btn):
@@ -106,7 +131,7 @@ def option_selected(what_btn):
 
 def opt_btn_framework(text, btn_id):
     return Button(frame, bg="light green", command=lambda:
-                  option_selected(btn_id), textvariable=text,
+                  prevent_spam(btn_id), textvariable=text,
                   font=("Comic Sans MS", 14, "bold"))
 
 
@@ -185,8 +210,11 @@ def export():
     filename = filedialog.asksaveasfilename(initialdir='/desktop',
                                             title='Save File',
                                             defaultextension=".txt")
-    my_file = open(filename, "w+", encoding="utf-8")
-    my_file.write(export_string)
+    try:
+        my_file = open(filename, "w+", encoding="utf-8")
+        my_file.write(export_string)
+    except FileNotFoundError:
+        pass
 
 
 class Question:
