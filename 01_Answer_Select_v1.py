@@ -1,4 +1,6 @@
 """
+Purpose: Allows buttons to be clicked and identified on click.
+         Also changes to next button values on click.
 Creator: Sammy Cummins
 Version: 1
 """
