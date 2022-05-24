@@ -12,7 +12,7 @@ def prevent():
     label.config(text=f"Total clicks of button are:{count}")
     if count == 1:
         click.config(state=DISABLED)
-        time = 0.2
+        time = 4
         count = 0
 
         def countdown():
@@ -20,7 +20,7 @@ def prevent():
             if time >= 0:
                 label.config(text=f"Button will be Enabled in {time} seconds")
                 time -= 1
-                label.after(200, countdown)
+                label.after(1000, countdown)
             else:
                 global count
                 label.config(text=f"Total clicks of button are: 0")
