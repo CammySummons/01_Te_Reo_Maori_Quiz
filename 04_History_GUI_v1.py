@@ -1,13 +1,13 @@
 """
+Purpose: Displays question and answer history in separate window
 Creator: Sammy Cummins
-Version: 2
-Update: This version contains the button spam prevention function
+Version: 1
 """
 
+
 # Imports
-from tkinter import *
+from tkinter import *  # GUI
 from functools import partial  # To prevent unwanted windows
-from tkinter import filedialog  # For exporting files
 
 # Set up the interface
 win = Tk()
@@ -31,37 +31,12 @@ opt4_text = StringVar()
 btn_disabled = False  # Buttons do nothing if btn_disabled = True
 num = 0  # Question number
 num_correct = 0  # Number of questions guest correctly
-count = 0
 current_question = StringVar()
 current_question.set(f"{num}/10")
 history_string = "No history has been recorded yet.\nStart the quiz to " \
                  "gain some sweet history!\n\n\n"
 guess_history = []
 final_score_history = []
-
-
-def prevent_spam(what_btn_transfer):
-    global count, time
-    count += 1
-    if count == 1:
-        eval(f"option{what_btn_transfer}").config(state=DISABLED)
-        time = 0.2
-        count = 0
-
-        def countdown():
-            global time
-            if time >= 0:
-                time -= 1
-                if num != 0:
-                    output_box.after(1000, countdown)
-                else:
-                    output_box.after(1, countdown)
-                option_selected(what_btn_transfer)
-            else:
-                global count
-                eval(f"option{what_btn_transfer}").config(state=NORMAL)
-
-        countdown()
 
 
 def option_selected(what_btn):
@@ -113,6 +88,7 @@ def option_selected(what_btn):
                                           f"\nPress restart to play again.",
                                       "", "", "", "", "")
                     final_score_history.append(f"{num_correct}/10\n")
+                    print(final_score_history)
 
                 opt1_text.set(eval(f"qst_{num}.btn1_text"))
                 opt2_text.set(eval(f"qst_{num}.btn2_text"))
@@ -130,18 +106,8 @@ def option_selected(what_btn):
 
 def opt_btn_framework(text, btn_id):
     return Button(frame, bg="light green", command=lambda:
-                  prevent_spam(btn_id), textvariable=text,
+                  option_selected(btn_id), textvariable=text,
                   font=("Comic Sans MS", 14, "bold"))
-
-
-def restart():
-    global num
-    global num_correct
-    global btn_disabled
-    num = 0
-    num_correct = 0
-    btn_disabled = False
-    option_selected(1)
 
 
 def history(history_string):
@@ -187,32 +153,6 @@ def history(history_string):
                             font="arial 10 bold",
                             command=partial(close_history))
     dismiss_button.grid(row=3, column=0, pady=30, ipady=10, ipadx=95)
-
-    export_button = Button(history_frame, text="Export", font="arial 10 bold",
-                           command=export)
-    export_button.grid(row=4, column=0, pady=0, ipady=10, ipadx=95)
-
-
-def export():
-    guess_history_string = ""
-    final_score_string = ""
-
-    for item in guess_history:
-        guess_history_string += item
-    for item in final_score_history:
-        final_score_string += item
-
-    export_string = f"----Final Scores----\n{final_score_string}\n" \
-                    f"\n----Guesses----\n{guess_history_string}"
-
-    filename = filedialog.asksaveasfilename(initialdir='/desktop',
-                                            title='Save File',
-                                            defaultextension=".txt")
-    try:
-        my_file = open(filename, "w+", encoding="utf-8")
-        my_file.write(export_string)
-    except FileNotFoundError:
-        pass
 
 
 class Question:
@@ -264,8 +204,6 @@ option1 = opt_btn_framework(opt1_text, 1)
 option2 = opt_btn_framework(opt2_text, 2)
 option3 = opt_btn_framework(opt3_text, 3)
 option4 = opt_btn_framework(opt4_text, 4)
-restart_btn = Button(frame, bg="pink", command=restart, text="Restart",
-                     font=("Comic Sans MS", 12, "bold"))
 history_btn = Button(frame, bg="pink", command=lambda: history(history_string),
                      text="History", font=("Comic Sans MS", 12, "bold"))
 
@@ -277,7 +215,6 @@ option1.place(x=150, y=250, width=320, height=80)
 option2.place(x=555, y=250, width=320, height=80)
 option3.place(x=150, y=400, width=320, height=80)
 option4.place(x=555, y=400, width=320, height=80)
-restart_btn.place(x=900, y=20, width=80, height=35)
 history_btn.place(x=800, y=20, width=80, height=35)
 
 # Welcome screen
