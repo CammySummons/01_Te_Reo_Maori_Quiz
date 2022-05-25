@@ -1,6 +1,7 @@
 """
 Creator: Sammy Cummins
 Version: 1
+Added upon compilation: Reset button so the user can play multiple times
 """
 
 
