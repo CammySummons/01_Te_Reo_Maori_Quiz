@@ -1,6 +1,7 @@
 """
 Creator: Sammy Cummins
 Version: 1
+Purpose: Allows user to save their results
 """
 
 
