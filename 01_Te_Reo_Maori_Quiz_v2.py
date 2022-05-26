@@ -1,7 +1,8 @@
 """
 Creator: Sammy Cummins
 Version: 2
-Update: This version contains the button spam prevention function
+Update: This version contains the button spam prevention
+        function and export button disability
 """
 
 # Imports
@@ -188,12 +189,13 @@ def history(history_string):
                             command=partial(close_history))
     dismiss_button.grid(row=3, column=0, pady=30, ipady=10, ipadx=95)
 
-    export_button = Button(history_frame, text="Export", font="arial 10 bold",
-                           command=export)
-    export_button.grid(row=4, column=0, pady=0, ipady=10, ipadx=95)
+    history.export_button = Button(history_frame, text="Export", font="arial 10 bold",
+                                   command=export)
+    history.export_button.grid(row=4, column=0, pady=0, ipady=10, ipadx=95)
 
 
 def export():
+    history.export_button.config(state=DISABLED)
     guess_history_string = ""
     final_score_string = ""
 
@@ -212,7 +214,7 @@ def export():
         my_file = open(filename, "w+", encoding="utf-8")
         my_file.write(export_string)
     except FileNotFoundError:
-        pass
+        history.export_button.config(state=ACTIVE)
 
 
 class Question:
