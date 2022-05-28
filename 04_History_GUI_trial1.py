@@ -1,7 +1,7 @@
 """
 Purpose: Displays question and answer history in separate window
 Creator: Sammy Cummins
-Version: 1
+Trial: 1
 """
 
 

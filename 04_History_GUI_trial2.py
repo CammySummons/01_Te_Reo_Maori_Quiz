@@ -1,7 +1,7 @@
 """
-Purpose: Displays question and answer history in separate window
+Purpose: Displays question and answer history on a separate screen(same window)
 Creator: Sammy Cummins
-Version: 1
+Trial: 2
 """
 
 
