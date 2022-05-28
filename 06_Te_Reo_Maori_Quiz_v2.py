@@ -9,7 +9,6 @@ Update: This version contains the button spam prevention
 from tkinter import *
 from functools import partial  # To prevent unwanted windows
 from tkinter import filedialog  # For exporting files
-from tkinter import ttk
 
 # Set up the interface
 win = Tk()
@@ -24,8 +23,6 @@ try:
 except TclError:
     pass
 frame = Frame(win, bg="dark green")  # Grid in which objects/widgets are held
-frame.style = ttk.Style(frame)
-frame.style.theme_use("vista")
 
 # Variable Declaration
 output_box_txt = StringVar()
