@@ -190,8 +190,8 @@ def history(history_string):
                             command=partial(close_history))
     dismiss_button.grid(row=3, column=0, pady=30, ipady=10, ipadx=95)
 
-    history.export_button = Button(history_frame, text="Export", font="arial 10 bold",
-                                   command=export)
+    history.export_button = Button(history_frame, text="Export",
+                                   font="arial 10 bold", command=export)
     history.export_button.grid(row=4, column=0, pady=0, ipady=10, ipadx=95)
 
 
