@@ -126,7 +126,7 @@ def option_selected(what_btn):
                     qst_11 = Question(11, f"You finished the quiz and got "
                                           f"{num_correct}/10 question correct."
                                           f"\nPress restart to play again.",
-                                      "", "", "", "", "")
+                                          "", "", "", "", "")
                     final_score_history.append(f"{num_correct}/10\n")
 
                 opt1_text.set(eval(f"qst_{qst_id}.btn1_text"))
