@@ -107,9 +107,11 @@ def option_selected(what_btn):
                 if guess_history and num > 1:
                     history_string = guess_history[-1]
 
+            # Makes option buttons do nothing once the quiz is finished
             if num == 11:
                 btn_disabled = True
 
+            # Randomly selecting a question
             if num <= 10:
                 qst_id = random.choice(qst_list)
                 qst_list.remove(qst_id)
@@ -151,29 +153,25 @@ def opt_btn_framework(text, btn_id):
 # Restarts the quiz
 def restart():
     global num, num_correct, btn_disabled, qst_list
-    qst_list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    qst_list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]  # Resets question pool
     num = 0
     num_correct = 0
     btn_disabled = False
-    option_selected(1)
+    option_selected(1)  # Running function to change button and label text
 
 
-# Opens history window and contains the functions of some of the widgets
+# Opens history window and contains the functions of some widgets
 def history(history_string):
-    # disable history button
-    history_btn.config(state=DISABLED)
 
     background = "#a9ef99"  # Pale green
     history_frame = Frame(win, width=300, bg=background)
     history_frame.place(x=0, y=0, height=1000, width=1000)
 
-    # Set up history heading (row 0)
     how_heading = Label(history_frame,
                         text="\nQuiz History",
                         font="arial 14 bold", bg=background)
     how_heading.place(x=442, y=55)
 
-    # history text (label, row 1)
     history_text = Label(history_frame,
                          text="Here are your two most recent guess results. "
                               "Please use the export button to "
@@ -188,8 +186,8 @@ def history(history_string):
                           wraplength=250)
     history_label.place(x=380, y=230, width=250, height=150)
 
+    # Closes history screen
     def close_history():
-        history_btn.config(state=NORMAL)
         history_frame.destroy()
 
     dismiss_button = Button(history_frame, text="Dismiss",
@@ -204,7 +202,10 @@ def history(history_string):
 
 # To export results at end of quiz
 def export():
+    # Disable export button while save window is open
     history.export_button.config(state=DISABLED)
+
+    # Strings to be compiled and displayed in the exported text file
     guess_history_string = ""
     final_score_string = ""
 
@@ -213,12 +214,15 @@ def export():
     for item in final_score_history:
         final_score_string += item
 
+    # Constructing export text
     export_string = f"----Final Scores----\n{final_score_string}\n" \
                     f"\n----Guesses----\n{guess_history_string}"
 
+    # Opens file explorer save window
     filename = filedialog.asksaveasfilename(initialdir='/Desktop',
                                             title='Save File',
                                             defaultextension=".txt")
+    # Writes to text file
     try:
         my_file = open(filename, "w+", encoding="utf-8")
         my_file.write(export_string)
